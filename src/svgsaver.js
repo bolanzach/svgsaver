@@ -34,6 +34,27 @@ function getFilename (el, filename, ext) {
   return encodeURI(filename);
 }
 
+function loadPng (uri, cb) {
+  var canvas = document.createElement('canvas');
+  var context = canvas.getContext('2d');
+  var image = new Image();
+
+  image.onload = function () {
+    canvas.width = image.width;
+    canvas.height = image.height;
+    context.drawImage(image, 0, 0);
+
+    if (isDefined(canvas.toBlob)) {
+      canvas.toBlob(function (blob) {
+        if (isFunction(cb)) {
+          cb(blob);
+        }
+      });
+    }
+  };
+  image.src = uri;
+}
+
 export class SvgSaver {
 
   /**
@@ -132,6 +153,11 @@ export class SvgSaver {
     return savePng(this.getUri(el), filename);
   }
 
+  /**
+   *
+   * @param el
+   * @api public
+   */
   asPngBlob (el) {
     el = getSvg(el);
     loadPng(this.getUri(el), function (blob) {
