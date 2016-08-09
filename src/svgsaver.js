@@ -27,13 +27,6 @@ function getSvg (el) {
   return el;
 }
 
-function getFilename (el, filename, ext) {
-  if (!filename || filename === '') {
-    filename = (el.getAttribute('title') || 'untitled') + '.' + ext;
-  }
-  return encodeURI(filename);
-}
-
 function loadPng (uri, cb) {
   var canvas = document.createElement('canvas');
   var context = canvas.getContext('2d');
@@ -53,6 +46,13 @@ function loadPng (uri, cb) {
     }
   };
   image.src = uri;
+}
+
+function getFilename (el, filename, ext) {
+  if (!filename || filename === '') {
+    filename = (el.getAttribute('title') || 'untitled') + '.' + ext;
+  }
+  return encodeURI(filename);
 }
 
 export class SvgSaver {
@@ -154,15 +154,15 @@ export class SvgSaver {
   }
 
   /**
+   * Returns the provided SVG element as a PNG Blob. Invokes the callback, passing to it the created
+   * PNG Blob.
    *
-   * @param el
-   * @api public
+   * @param {SVGElement} el The svg to copy
+   * @param {function} callback Callback function
    */
-  asPngBlob (el) {
+  asPngBlob (el, callback) {
     el = getSvg(el);
-    loadPng(this.getUri(el), function (blob) {
-      console.log(blob);
-    });
+    loadPng(this.getUri(el), callback);
   }
 
 }
