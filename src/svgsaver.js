@@ -132,6 +132,11 @@ export class SvgSaver {
     return savePng(this.getUri(el), filename);
   }
 
+  asPngBlob (el) {
+    el = this.getUri(el);
+    return this.getBlob(el);
+  }
+
 }
 
 export default SvgSaver;
