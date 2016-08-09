@@ -133,8 +133,10 @@ export class SvgSaver {
   }
 
   asPngBlob (el) {
-    el = this.getUri(el);
-    return this.getBlob(el);
+    el = getSvg(el);
+    loadPng(this.getUri(el), function (blob) {
+      console.log(blob);
+    });
   }
 
 }
